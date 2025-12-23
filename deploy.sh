@@ -3,6 +3,15 @@
 ################################################################################
 # Solana Hyper Bot - Cloud Deployment Script
 # This script sets up and deploys the Solana hyper bot in ~30 seconds
+#
+# SECURITY NOTICE:
+# This script is designed to be run via: 
+#   curl -sSL https://raw.githubusercontent.com/5mil/solana-hyper-bot/main/deploy.sh | bash
+# 
+# Before running any script from the internet:
+# 1. Review the script contents at the URL above
+# 2. Verify you trust the source repository
+# 3. Consider downloading and inspecting the script first
 ################################################################################
 
 set -e  # Exit on any error
@@ -74,19 +83,24 @@ log_success "Prerequisites check passed"
 # Install Node.js if not present
 log_info "Checking Node.js installation..."
 if ! command -v node >/dev/null 2>&1; then
-    log_warning "Node.js not found. Installing..."
+    log_warning "Node.js not found."
     if [ "$OS" == "linux" ]; then
-        curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
-        apt-get install -y nodejs
+        log_info "To install Node.js on Linux, run:"
+        log_info "  curl -fsSL https://deb.nodesource.com/setup_20.x | sudo bash -"
+        log_info "  sudo apt-get install -y nodejs"
+        log_info "Or download from: https://nodejs.org/"
+        log_error "Please install Node.js and run this script again."
+        exit 1
     elif [ "$OS" == "macos" ]; then
         if command -v brew >/dev/null 2>&1; then
+            log_info "Installing Node.js via Homebrew..."
             brew install node
+            log_success "Node.js installed"
         else
             log_error "Homebrew not found. Please install Node.js manually from https://nodejs.org/"
             exit 1
         fi
     fi
-    log_success "Node.js installed"
 else
     NODE_VERSION=$(node -v)
     log_success "Node.js $NODE_VERSION already installed"
@@ -101,17 +115,11 @@ fi
 # Install Solana CLI if not present
 log_info "Checking Solana CLI installation..."
 if ! command -v solana >/dev/null 2>&1; then
-    log_warning "Solana CLI not found. Installing..."
-    sh -c "$(curl -sSfL https://release.solana.com/stable/install)"
-    
-    # Add to PATH for current session
-    export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
-    
-    if command -v solana >/dev/null 2>&1; then
-        log_success "Solana CLI installed"
-    else
-        log_warning "Solana CLI installed but not in PATH. You may need to restart your shell."
-    fi
+    log_warning "Solana CLI not found."
+    log_info "To install Solana CLI, run:"
+    log_info "  sh -c \"\$(curl -sSfL https://release.solana.com/stable/install)\""
+    log_info "Or visit: https://docs.solana.com/cli/install-solana-cli-tools"
+    log_warning "Continuing without Solana CLI. You can install it later."
 else
     SOLANA_VERSION=$(solana --version | head -n1)
     log_success "Solana CLI already installed: $SOLANA_VERSION"
@@ -131,7 +139,10 @@ cd "$INSTALL_DIR"
 log_success "Installation directory created"
 
 # Clone repository if we're running from curl (not already in repo)
-if [ ! -f "$(dirname "$0")/README.md" ] || [ "$(dirname "$0")" == "/dev/fd" ]; then
+# Check multiple indicators: if README.md doesn't exist in parent dir, 
+# or if the script is in /tmp, /dev/fd, or similar temporary locations
+SCRIPT_DIR="$(cd "$(dirname "$0")" 2>/dev/null && pwd)"
+if [ ! -f "${SCRIPT_DIR}/README.md" ] || [[ "$SCRIPT_DIR" =~ ^(/tmp|/dev/fd|/proc) ]]; then
     log_info "Cloning Solana Hyper Bot repository..."
     git clone https://github.com/5mil/solana-hyper-bot.git .
     log_success "Repository cloned"
@@ -219,8 +230,13 @@ cat > "$START_SCRIPT" << 'EOF'
 
 cd "$(dirname "$0")"
 
+# Safely load environment variables
 if [ -f ".env" ]; then
-    export $(cat .env | grep -v '^#' | xargs)
+    # Use set -a to automatically export variables, then source .env
+    set -a
+    # shellcheck disable=SC1091
+    source .env 2>/dev/null || true
+    set +a
 fi
 
 if [ -f "package.json" ] && [ -f "index.js" ]; then
