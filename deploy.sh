@@ -94,8 +94,13 @@ if ! command -v node >/dev/null 2>&1; then
     elif [ "$OS" == "macos" ]; then
         if command -v brew >/dev/null 2>&1; then
             log_info "Installing Node.js via Homebrew..."
-            brew install node
-            log_success "Node.js installed"
+            if brew install node; then
+                log_success "Node.js installed"
+            else
+                log_error "Failed to install Node.js via Homebrew"
+                log_info "Please install Node.js manually from https://nodejs.org/"
+                exit 1
+            fi
         else
             log_error "Homebrew not found. Please install Node.js manually from https://nodejs.org/"
             exit 1
@@ -140,9 +145,9 @@ log_success "Installation directory created"
 
 # Clone repository if we're running from curl (not already in repo)
 # Check multiple indicators: if README.md doesn't exist in parent dir, 
-# or if the script is in /tmp, /dev/fd, or similar temporary locations
+# or if the script is in temporary/proc locations typical of curl execution
 SCRIPT_DIR="$(cd "$(dirname "$0")" 2>/dev/null && pwd)"
-if [ ! -f "${SCRIPT_DIR}/README.md" ] || [[ "$SCRIPT_DIR" =~ ^(/tmp|/dev/fd|/proc) ]]; then
+if [ ! -f "${SCRIPT_DIR}/README.md" ] || [[ "$SCRIPT_DIR" =~ ^(/tmp|/var/tmp|/dev/fd|/proc) ]]; then
     log_info "Cloning Solana Hyper Bot repository..."
     git clone https://github.com/5mil/solana-hyper-bot.git .
     log_success "Repository cloned"
@@ -235,8 +240,12 @@ if [ -f ".env" ]; then
     # Use set -a to automatically export variables, then source .env
     set -a
     # shellcheck disable=SC1091
-    source .env 2>/dev/null || true
-    set +a
+    if source .env 2>/dev/null; then
+        set +a
+    else
+        set +a
+        echo "Warning: Failed to load .env file. Please check for syntax errors."
+    fi
 fi
 
 if [ -f "package.json" ] && [ -f "index.js" ]; then
