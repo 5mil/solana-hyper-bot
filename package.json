@@ -1,0 +1,23 @@
+{
+  "name": "solana-hyper-bot",
+  "version": "1.0.0",
+  "description": "A high-performance Solana trading bot for automated trading strategies",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "solana",
+    "trading",
+    "bot",
+    "crypto",
+    "defi"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@solana/web3.js": "^1.87.7",
+    "dotenv": "^16.3.1"
+  }
+}

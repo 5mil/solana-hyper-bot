@@ -1,0 +1,14 @@
+{
+  "network": "devnet",
+  "rpcUrl": "https://api.devnet.solana.com",
+  "wsUrl": "wss://api.devnet.solana.com",
+  "logLevel": "info",
+  "wallet": {
+    "path": "~/.config/solana/id.json"
+  },
+  "bot": {
+    "enabled": true,
+    "slippageTolerance": 0.01,
+    "maxRetries": 3
+  }
+}
