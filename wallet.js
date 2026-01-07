@@ -1,6 +1,7 @@
 const { Connection, Keypair, LAMPORTS_PER_SOL, PublicKey } = require('@solana/web3.js');
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 
 class Wallet {
   constructor(connection) {
@@ -14,7 +15,9 @@ class Wallet {
    */
   loadFromFile(walletPath) {
     try {
-      const expandedPath = walletPath.replace(/^~/, process.env.HOME || process.env.USERPROFILE);
+      const expandedPath = walletPath.startsWith('~') 
+        ? path.join(os.homedir(), walletPath.slice(1))
+        : walletPath;
       const absolutePath = path.resolve(expandedPath);
       
       if (!fs.existsSync(absolutePath)) {
@@ -49,7 +52,9 @@ class Wallet {
     }
 
     try {
-      const expandedPath = walletPath.replace(/^~/, process.env.HOME || process.env.USERPROFILE);
+      const expandedPath = walletPath.startsWith('~')
+        ? path.join(os.homedir(), walletPath.slice(1))
+        : walletPath;
       const absolutePath = path.resolve(expandedPath);
       const dir = path.dirname(absolutePath);
 

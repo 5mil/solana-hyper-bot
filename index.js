@@ -52,7 +52,13 @@ async function main() {
     rpcUrl = config.rpcUrl;
   } else {
     // Use default Solana RPC for the network
-    rpcUrl = clusterApiUrl(config.network);
+    try {
+      rpcUrl = clusterApiUrl(config.network);
+    } catch (error) {
+      console.error(`❌ Invalid network name: ${config.network}`);
+      console.error('Valid networks: mainnet-beta, testnet, devnet');
+      process.exit(1);
+    }
   }
   console.log(`🔗 RPC URL: ${rpcUrl}\n`);
 
@@ -118,9 +124,16 @@ async function main() {
     process.exit(0);
   });
 
+  process.on('SIGTERM', () => {
+    console.log('\n\n👋 Shutting down bot...');
+    process.exit(0);
+  });
+
   // Main bot loop would go here
-  // For now, just keep the process alive
-  await new Promise(() => {});
+  // For now, use setInterval to keep process alive and allow for future periodic tasks
+  setInterval(() => {
+    // Placeholder for periodic tasks (e.g., health checks, monitoring)
+  }, 60000); // Check every minute
 }
 
 // Run the bot
