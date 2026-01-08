@@ -99,6 +99,12 @@ See [PRINCIPIA_MATHEMATICA_TRADING_FRAMEWORK.md](PRINCIPIA_MATHEMATICA_TRADING_F
 - Practical examples
 - Full citations from Newton's original text
 
+**Generate PDF Documentation:**
+```bash
+npm run generate-pdf
+# Opens the HTML file which can be printed to PDF from any browser
+```
+
 ### ⚙️ Principia Engine Configuration
 
 Edit `config.json` to tune the engine parameters:

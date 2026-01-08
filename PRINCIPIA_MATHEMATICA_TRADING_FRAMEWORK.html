@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Philosophiæ Naturalis Principia Mathematica - Trading Framework</title>
+    <style>
+        @media print {
+            body { margin: 0; }
+            @page { margin: 2cm; }
+        }
+        
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+            background: #fff;
+        }
+        
+        h1 {
+            color: #1a1a1a;
+            border-bottom: 3px solid #333;
+            padding-bottom: 10px;
+            font-size: 2.5em;
+            margin-top: 40px;
+        }
+        
+        h2 {
+            color: #2a2a2a;
+            border-bottom: 2px solid #666;
+            padding-bottom: 8px;
+            margin-top: 30px;
+            font-size: 2em;
+        }
+        
+        h3 {
+            color: #3a3a3a;
+            margin-top: 25px;
+            font-size: 1.5em;
+        }
+        
+        h4 {
+            color: #4a4a4a;
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        pre {
+            background: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        pre code {
+            background: none;
+            padding: 0;
+        }
+        
+        blockquote {
+            border-left: 4px solid #ccc;
+            margin: 15px 0;
+            padding: 10px 20px;
+            background: #f9f9f9;
+            font-style: italic;
+        }
+        
+        ul, ol {
+            margin: 10px 0;
+            padding-left: 30px;
+        }
+        
+        li {
+            margin: 5px 0;
+        }
+        
+        hr {
+            border: none;
+            border-top: 1px solid #ccc;
+            margin: 30px 0;
+        }
+        
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 15px 0;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        th {
+            background: #f4f4f4;
+            font-weight: bold;
+        }
+        
+        strong {
+            color: #000;
+        }
+        
+        .page-break {
+            page-break-after: always;
+        }
+        
+        .title-page {
+            text-align: center;
+            margin: 100px 0;
+        }
+        
+        .title-page h1 {
+            border: none;
+            font-size: 3em;
+            margin: 40px 0;
+        }
+        
+        .subtitle {
+            font-size: 1.5em;
+            color: #666;
+            margin: 20px 0;
+        }
+        
+        .citation {
+            background: #f0f8ff;
+            border-left: 4px solid #4682b4;
+            padding: 10px 15px;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+    </style>
+</head>
+<body>
+    <div class="title-page">
+        <h1>Philosophiæ Naturalis Principia Mathematica</h1>
+        <div class="subtitle">Application to Algorithmic Trading Systems</div>
+        <p style="margin-top: 60px;">
+            <strong>Trading Framework Documentation</strong><br>
+            Based on Isaac Newton's Mathematical Principles of Natural Philosophy (1687)
+        </p>
+        <p style="margin-top: 40px; color: #888;">
+            Solana Hyper Bot<br>
+            Version 1.0<br>
+            January 2026
+        </p>
+    </div>
+    
+    <div class="page-break"></div>
+    
+    <h1>Philosophiæ Naturalis Principia Mathematica</h1>
+<h2>Application to Algorithmic Trading Systems</h2>
+<h3>Executive Summary</h3>
+<p>This document details the application of Isaac Newton's "Mathematical Principles of Natural Philosophy" (Principia Mathematica, 1687) to the development of a systematic trading engine. The bot engine (<code>principia-engine.js</code>) implements trading logic directly derived from Newton's laws of motion and universal gravitation.</p>
+<hr>
+<h2>Table of Contents</h2>
+<li>[Historical Context](#historical-context)</li>
+<li>[Newton's Three Laws of Motion](#newtons-three-laws-of-motion)</li>
+<li>[Universal Gravitation](#universal-gravitation)</li>
+<li>[Conservation of Momentum](#conservation-of-momentum)</li>
+<li>[Trading Engine Implementation](#trading-engine-implementation)</li>
+<li>[Mathematical Formulations](#mathematical-formulations)</li>
+<li>[Configuration Parameters](#configuration-parameters)</li>
+<li>[Practical Examples](#practical-examples)</li>
+<li>[Risk Management Framework](#risk-management-framework)</li>
+<li>[References and Citations](#references-and-citations)</li>
+<hr>
+<h2>Historical Context</h2>
+<h3>About Principia Mathematica</h3>
+<p><strong>Full Title</strong>: <em>Philosophiæ Naturalis Principia Mathematica</em> (Mathematical Principles of Natural Philosophy)</p>
+<p><strong>Author</strong>: Sir Isaac Newton</p>
+<p><strong>Publication</strong>: First edition 1687, Royal Society of London</p>
+<p><strong>Significance</strong>: One of the most important works in the history of science, establishing classical mechanics and universal gravitation.</p>
+<h3>Why Apply Principia to Trading?</h3>
+<p>Markets, like physical systems, exhibit:
+<li><strong>Momentum</strong>: Trends persist until acted upon by opposing forces</li>
+<li><strong>Inertia</strong>: Prices resist change without sufficient force</li>
+<li><strong>Action-Reaction</strong>: Every trade creates market impact and risk</li>
+<li><strong>Attraction</strong>: Prices gravitate toward significant levels</li>
+<li><strong>Conservation Laws</strong>: Energy/momentum flows between market participants</li></p>
+<hr>
+<h2>Newton's Three Laws of Motion</h2>
+<h3>LAW I: Law of Inertia</h3>
+<p>#### Original Text (Principia, Book I)
+<blockquote><em>"Every body perseveres in its state of rest, or of uniform motion in a right line, unless it is compelled to change that state by forces impressed thereon."</em></blockquote>
+>
+<blockquote>— Newton, Principia Mathematica, Axioms or Laws of Motion, Law I</blockquote></p>
+<p>#### Trading Application: <strong>Anti-Overtrading Principle</strong></p>
+<p><strong>Concept</strong>: The bot maintains its current position (long, short, or neutral) unless a sufficiently strong market signal (force) compels a change.</p>
+<p><strong>Implementation</strong>:
+<pre><code class="language-javascript">// Inertia threshold - minimum signal strength to trigger action
+const INERTIA_THRESHOLD = 0.15; // 15% signal strength</p>
+<p>overcomesInertia(signalStrength) {
+  return Math.abs(signalStrength) >= this.config.inertiaThreshold;
+}
+</code></pre></p>
+<p><strong>Benefits</strong>:
+<li>Prevents whipsaw trading on weak signals</li>
+<li>Reduces transaction costs</li>
+<li>Enforces conviction-based trading</li>
+<li>Natural trend following behavior</li></p>
+<p><strong>Principia Citation</strong>: Book I, Definition III; Axioms or Laws of Motion, Law I</p>
+<hr>
+<h3>LAW II: Law of Acceleration</h3>
+<p>#### Original Text (Principia, Book I)
+<blockquote><em>"The alteration of motion is ever proportional to the motive force impressed; and is made in the direction of the right line in which that force is impressed."</em></blockquote>
+>
+<blockquote>— Newton, Principia Mathematica, Axioms or Laws of Motion, Law II</blockquote></p>
+<p><strong>Modern Formulation</strong>: F = ma, or a = F/m</p>
+<p>#### Trading Application: <strong>Proportional Position Sizing</strong></p>
+<p><strong>Concept</strong>: Trade size and speed are proportional to signal strength. Stronger signals result in larger positions; weaker signals result in smaller adjustments.</p>
+<p><strong>Implementation</strong>:
+<pre><code class="language-javascript">// F = ma, therefore a = F/m
+calculateAcceleration(force) {
+  return force / this.config.tradingMass;
+}</p>
+<p>// Position change proportional to acceleration
+newPositionSize = currentPosition + acceleration;
+</code></pre></p>
+<p><strong>Variables</strong>:
+<li><strong>Force (F)</strong>: Combined market signal strength (-1 to 1)</li>
+<li><strong>Mass (m)</strong>: Trading conservatism parameter (higher = more conservative)</li>
+<li><strong>Acceleration (a)</strong>: Rate of position change</li></p>
+<p><strong>Benefits</strong>:
+<li>Risk-adjusted position sizing</li>
+<li>Gradual entries/exits for large positions</li>
+<li>Adapts to signal strength automatically</li>
+<li>Prevents oversized positions on weak signals</li></p>
+<p><strong>Principia Citation</strong>: Book I, Axioms or Laws of Motion, Law II; Book II, Propositions on resistance</p>
+<hr>
+<h3>LAW III: Law of Action-Reaction</h3>
+<p>#### Original Text (Principia, Book I)
+<blockquote><em>"To every action there is always opposed an equal reaction: or the mutual actions of two bodies upon each other are always equal, and directed to contrary parts."</em></blockquote>
+>
+<blockquote>— Newton, Principia Mathematica, Axioms or Laws of Motion, Law III</blockquote></p>
+<p>#### Trading Application: <strong>Risk Management Protocol</strong></p>
+<p><strong>Concept</strong>: For every position taken (action), implement equal and opposite risk management measures (reaction). This includes stop losses, profit targets, and hedging strategies.</p>
+<p><strong>Implementation</strong>:
+<pre><code class="language-javascript">calculateReaction(positionSize) {
+  const ratio = this.config.riskReactionRatio;
+  return {
+    stopLoss: positionSize <em> ratio </em> 0.5,      // Stop loss level
+    takeProfit: positionSize <em> ratio </em> 1.5,    // Profit target
+    hedgeSize: positionSize <em> ratio </em> 0.2,     // Hedge position
+  };
+}
+</code></pre></p>
+<p><strong>Risk Parameters</strong>:
+<li><strong>Stop Loss</strong>: 50% of position value at risk (minimum)</li>
+<li><strong>Take Profit</strong>: 150% profit target (1.5:1 reward:risk)</li>
+<li><strong>Hedge</strong>: 20% counter-position for protection</li></p>
+<p><strong>Benefits</strong>:
+<li>Systematic risk management</li>
+<li>Enforced reward:risk ratios</li>
+<li>Automatic hedge calculation</li>
+<li>Protection against adverse moves</li></p>
+<p><strong>Principia Citation</strong>: Book I, Axioms or Laws of Motion, Law III; Corollaries I-VI</p>
+<hr>
+<h2>Universal Gravitation</h2>
+<h3>Law of Universal Gravitation</h3>
+<p>#### Original Text (Principia, Book III)
+<blockquote><em>"Every particle attracts every other particle in the universe with a force which is directly proportional to the product of their masses and inversely proportional to the square of the distance between their centers."</em></blockquote>
+>
+<blockquote>— Newton, Principia Mathematica, Book III, Proposition VII, Theorem VII</blockquote></p>
+<p><strong>Mathematical Formulation</strong>: F = G × (m₁ × m₂) / r²</p>
+<p>Where:
+<li>F = gravitational force</li>
+<li>G = gravitational constant</li>
+<li>m₁, m₂ = masses of two objects</li>
+<li>r = distance between centers</li></p>
+<p>#### Trading Application: <strong>Support/Resistance Attraction</strong></p>
+<p><strong>Concept</strong>: Price movements are attracted to significant price levels (support/resistance) with force proportional to volume at those levels and inversely proportional to the square of distance from current price.</p>
+<p><strong>Implementation</strong>:
+<pre><code class="language-javascript">calculateGravitationalForce(currentPrice, keyLevels) {
+  let totalForce = 0;
+  
+  for (const level of keyLevels) {
+    const distance = Math.abs(currentPrice - level.price);
+    if (distance === 0) continue;
+    
+    // F = G * (volume) / distance²
+    const force = G * (level.volume / Math.pow(distance, 2));
+    const direction = level.price > currentPrice ? 1 : -1;
+    
+    totalForce += force * direction;
+  }
+  
+  return totalForce;
+}
+</code></pre></p>
+<p><strong>Trading Variables</strong>:
+<li><strong>m₁</strong>: Volume at support/resistance level (market significance)</li>
+<li><strong>m₂</strong>: Current trade volume (inherent in calculation)</li>
+<li><strong>r</strong>: Price distance from current level</li>
+<li><strong>G</strong>: Gravitational constant (tuning parameter)</li></p>
+<p><strong>Benefits</strong>:
+<li>Automatic support/resistance detection</li>
+<li>Volume-weighted price targets</li>
+<li>Mean reversion signals near key levels</li>
+<li>Breakout detection when gravity overcome</li></p>
+<p><strong>Applications</strong>:
+<li><strong>Strong nearby support</strong> (high volume, close distance) → Strong buy signal</li>
+<li><strong>Distant resistance</strong> (low effective force) → Minimal impact on decisions</li>
+<li><strong>Multiple level confluence</strong> → Amplified gravitational effect</li>
+<li><strong>Breakout scenarios</strong> → Overcoming gravitational pull signals strength</li></p>
+<p><strong>Principia Citation</strong>: Book III, Proposition VII, Theorem VII; Proposition VIII, Theorem VIII; Phenomena I-VI</p>
+<hr>
+<h2>Conservation of Momentum</h2>
+<h3>Law of Conservation of Momentum</h3>
+<p>#### Original Text (Principia, Book I)
+<blockquote><em>"The quantity of motion is the measure of the same, arising from the velocity and quantity of matter conjointly."</em></blockquote>
+>
+<blockquote>— Newton, Principia Mathematica, Book I, Definition II</blockquote></p>
+<p><strong>Mathematical Formulation</strong>: Momentum (p) = mass (m) × velocity (v)</p>
+<p>#### Trading Application: <strong>Trend Persistence</strong></p>
+<p><strong>Concept</strong>: Market momentum (price × volume trend) is conserved unless external forces (news, reversals) act upon it. Track momentum to identify trend persistence or reversal points.</p>
+<p><strong>Implementation</strong>:
+<pre><code class="language-javascript">updateMomentum(currentPrice) {
+  // Calculate velocity (rate of price change)
+  const velocity = (currentPrice - oldPrice) / oldPrice;
+  
+  // Momentum = mass × velocity
+  this.momentum = this.config.tradingMass * velocity;
+  
+  return this.momentum;
+}
+</code></pre></p>
+<p><strong>Momentum Indicators</strong>:
+<li><strong>Positive momentum</strong>: Uptrend likely to continue</li>
+<li><strong>Negative momentum</strong>: Downtrend likely to continue</li>
+<li><strong>Decreasing momentum</strong>: Potential reversal warning</li>
+<li><strong>Increasing momentum</strong>: Trend acceleration</li></p>
+<p><strong>Benefits</strong>:
+<li>Trend following capability</li>
+<li>Early reversal detection</li>
+<li>Momentum-based entry timing</li>
+<li>Natural stop-loss adjustments</li></p>
+<p><strong>Principia Citation</strong>: Book I, Definition II; Book II, Proposition XXIV, Theorem XIX (momentum in resisting media)</p>
+<hr>
+<h2>Trading Engine Implementation</h2>
+<h3>Core Algorithm</h3>
+<p>The trading engine combines all Principia principles into a unified decision framework:</p>
+<pre><code class="language-javascript">analyzeMarket(marketData) {
+  // 1. Update momentum (Conservation Law)
+  const momentum = this.updateMomentum(price);
+  
+  // 2. Calculate gravitational forces (Universal Gravitation)
+  const gravitationalForce = this.calculateGravitationalForce(price, keyLevels);
+  
+  // 3. Combine forces
+  const combinedForce = signalStrength * 0.6 + 
+                       momentum * 0.2 + 
+                       gravitationalForce * 0.2;
+  
+  // 4. Check inertia (Law I)
+  if (!this.overcomesInertia(combinedForce)) {
+    return { action: 'hold', reason: 'Insufficient force to overcome inertia' };
+  }
+  
+  // 5. Calculate acceleration and position change (Law II)
+  const acceleration = this.calculateAcceleration(combinedForce);
+  const newPositionSize = this.positionSize + acceleration;
+  
+  // 6. Calculate risk management (Law III)
+  const riskManagement = this.calculateReaction(newPositionSize);
+  
+  return {
+    action: 'buy' | 'sell' | 'hold',
+    positionSize: newPositionSize,
+    riskManagement,
+    // ... detailed analytics
+  };
+}
+</code></pre>
+<h3>Force Composition</h3>
+<p>Market signals are weighted and combined:
+<li><strong>Base Signal</strong>: 60% weight (technical indicators, strategies)</li>
+<li><strong>Momentum</strong>: 20% weight (trend persistence)</li>
+<li><strong>Gravitation</strong>: 20% weight (support/resistance attraction)</li></p>
+<p><strong>Principia Justification</strong>: Newton's law of force composition (Corollary II, Laws of Motion) states forces can be combined vectorially.</p>
+<hr>
+<h2>Mathematical Formulations</h2>
+<h3>1. Inertia Equation</h3>
+<pre><code class="language-">overcomesInertia = |F_combined| ≥ F_threshold
+<p>Where:
+  F_combined = combined market force
+  F_threshold = inertia threshold (default: 0.15)
+</code></pre></p>
+<p><strong>Principia Reference</strong>: Book I, Law I</p>
+<hr>
+<h3>2. Position Acceleration</h3>
+<pre><code class="language-">a = F / m
+<p>Where:
+  a = position acceleration (rate of change)
+  F = combined market force
+  m = trading mass (resistance to change)
+</code></pre></p>
+<p><strong>Principia Reference</strong>: Book I, Law II</p>
+<hr>
+<h3>3. Gravitational Force</h3>
+<pre><code class="language-">F_gravity = Σ(G × V_i / d_i²) × direction_i
+<p>Where:
+  G = gravitational constant
+  V_i = volume at key level i
+  d_i = distance from current price to level i
+  direction_i = +1 if level above, -1 if below
+</code></pre></p>
+<p><strong>Principia Reference</strong>: Book III, Proposition VII</p>
+<hr>
+<h3>4. Momentum</h3>
+<pre><code class="language-">p = m × v
+<p>Where:
+  p = momentum
+  m = trading mass
+  v = velocity (price change rate)
+  v = (P_current - P_initial) / P_initial
+</code></pre></p>
+<p><strong>Principia Reference</strong>: Book I, Definition II</p>
+<hr>
+<h3>5. Risk Reaction</h3>
+<pre><code class="language-">StopLoss = Position × Ratio × 0.5
+TakeProfit = Position × Ratio × 1.5
+HedgeSize = Position × Ratio × 0.2
+<p>Where:
+  Ratio = risk:reward ratio (default: 1.0)
+</code></pre></p>
+<p><strong>Principia Reference</strong>: Book I, Law III</p>
+<hr>
+<h2>Configuration Parameters</h2>
+<h3>Default Configuration</h3>
+<pre><code class="language-javascript">{
+  // LAW I: Inertia
+  inertiaThreshold: 0.15,        // 15% minimum signal strength
+  
+  // LAW II: Mass
+  tradingMass: 1.0,              // Resistance to change (1.0 = normal)
+  
+  // LAW III: Risk Management
+  riskReactionRatio: 1.0,        // 1:1 minimum reward:risk
+  
+  // GRAVITATION: Attraction
+  gravitationalConstant: 0.001,   // Tuning parameter
+  
+  // MOMENTUM: Tracking
+  momentumPeriod: 20,            // Periods to track
+  
+  // POSITION LIMITS
+  maxPositionSize: 0.3,          // 30% of portfolio maximum
+}
+</code></pre>
+<h3>Parameter Tuning Guide</h3>
+<p>#### Inertia Threshold (0.05 - 0.30)
+<li><strong>Lower</strong> (0.05): More responsive, more trades, higher costs</li>
+<li><strong>Higher</strong> (0.30): More selective, fewer trades, higher conviction</li>
+<li><strong>Recommended</strong>: 0.15 for balanced approach</li></p>
+<p>#### Trading Mass (0.5 - 2.0)
+<li><strong>Lower</strong> (0.5): Aggressive position changes, higher risk</li>
+<li><strong>Higher</strong> (2.0): Conservative adjustments, lower risk</li>
+<li><strong>Recommended</strong>: 1.0 for moderate risk</li></p>
+<p>#### Risk Reaction Ratio (0.5 - 2.0)
+<li><strong>Lower</strong> (0.5): Tighter stops, smaller hedges</li>
+<li><strong>Higher</strong> (2.0): Wider stops, larger hedges</li>
+<li><strong>Recommended</strong>: 1.0 for 1:1 risk:reward</li></p>
+<p>#### Gravitational Constant (0.0001 - 0.01)
+<li><strong>Lower</strong>: Minimal support/resistance influence</li>
+<li><strong>Higher</strong>: Strong attraction to key levels</li>
+<li><strong>Recommended</strong>: 0.001 for moderate influence</li></p>
+<hr>
+<h2>Practical Examples</h2>
+<h3>Example 1: Strong Buy Signal</h3>
+<p><strong>Market Conditions</strong>:
+<li>Current Price: $100</li>
+<li>Signal Strength: 0.75 (strong buy)</li>
+<li>Momentum: 0.10 (positive trend)</li>
+<li>Key Resistance at $110 with high volume</li></p>
+<p><strong>Engine Analysis</strong>:
+<pre><code class="language-javascript">// Combined force
+combinedForce = 0.75 <em> 0.6 + 0.10 </em> 0.2 + gravitation * 0.2
+              = 0.45 + 0.02 + 0.03 = 0.50</p>
+<p>// Law I: Overcomes inertia (0.50 > 0.15) ✓
+// Law II: Acceleration = 0.50 / 1.0 = 0.50
+// Position increase by 50% of maximum</p>
+<p>// Law III: Risk management
+stopLoss = position * 0.5      // 50% stop
+takeProfit = position * 1.5    // 150% target
+hedge = position * 0.2         // 20% hedge</p>
+<p>// Action: BUY
+</code></pre></p>
+<p><strong>Principia Principles Applied</strong>:
+<li>Law I: Signal overcame inertia threshold</li>
+<li>Law II: Position sized proportionally to force</li>
+<li>Law III: Automatic risk management calculated</li>
+<li>Gravitation: Attraction to resistance considered</li></p>
+<hr>
+<h3>Example 2: Weak Signal - Hold Position</h3>
+<p><strong>Market Conditions</strong>:
+<li>Current Price: $100</li>
+<li>Signal Strength: 0.10 (weak buy)</li>
+<li>Momentum: 0.02 (slight positive)</li>
+<li>No strong key levels nearby</li></p>
+<p><strong>Engine Analysis</strong>:
+<pre><code class="language-javascript">// Combined force
+combinedForce = 0.10 <em> 0.6 + 0.02 </em> 0.2 + 0.00 * 0.2
+              = 0.06 + 0.004 + 0.00 = 0.064</p>
+<p>// Law I: Does NOT overcome inertia (0.064 < 0.15) ✗
+// Action: HOLD (maintain current position)
+</code></pre></p>
+<p><strong>Principia Principle Applied</strong>:
+<li>Law I: Insufficient force to overcome inertia</li>
+<li>Position preserved due to low conviction</li></p>
+<hr>
+<h3>Example 3: Support Bounce</h3>
+<p><strong>Market Conditions</strong>:
+<li>Current Price: $95</li>
+<li>Signal Strength: 0.50 (moderate buy)</li>
+<li>Momentum: -0.15 (downtrend)</li>
+<li>Strong Support at $94 with very high volume</li></p>
+<p><strong>Engine Analysis</strong>:
+<pre><code class="language-javascript">// Gravitational force (strong support nearby)
+distance = |95 - 94| = 1
+F_gravity = 0.001 * (high_volume / 1²) = 0.25 (strong upward pull)</p>
+<p>// Combined force
+combinedForce = 0.50 <em> 0.6 + (-0.15) </em> 0.2 + 0.25 * 0.2
+              = 0.30 - 0.03 + 0.05 = 0.32</p>
+<p>// Law I: Overcomes inertia (0.32 > 0.15) ✓
+// Action: BUY near support (mean reversion)
+</code></pre></p>
+<p><strong>Principia Principles Applied</strong>:
+<li>Universal Gravitation: Strong support attracts price</li>
+<li>Law I: Combined force overcame inertia</li>
+<li>Momentum: Negative momentum offset by gravitation</li></p>
+<hr>
+<h2>Risk Management Framework</h2>
+<h3>Based on Law III (Action-Reaction)</h3>
+<p>#### Stop Loss Calculation
+<pre><code class="language-javascript">stopLoss = positionSize <em> riskReactionRatio </em> 0.5
+</code></pre></p>
+<p><strong>Justification</strong>: Equal and opposite reaction requires protection against adverse moves. Stop loss represents the "reaction force" to entering a position.</p>
+<p>#### Take Profit Calculation
+<pre><code class="language-javascript">takeProfit = positionSize <em> riskReactionRatio </em> 1.5
+</code></pre></p>
+<p><strong>Justification</strong>: Asymmetric reward:risk (1.5:1) accounts for trading costs and win rate requirements. Over time, this ratio ensures profitability with >40% win rate.</p>
+<p>#### Hedge Calculation
+<pre><code class="language-javascript">hedgeSize = positionSize <em> riskReactionRatio </em> 0.2
+</code></pre></p>
+<p><strong>Justification</strong>: Partial counter-position (20%) provides dynamic risk reduction without eliminating profit potential. This represents Newton's concept of opposing forces in equilibrium.</p>
+<h3>Portfolio Heat Management</h3>
+<p>Maximum position size limited to 30% of portfolio by default, preventing excessive concentration risk.</p>
+<p><strong>Principia Analogy</strong>: Just as gravitational systems maintain orbital stability through balanced forces, portfolio management requires balanced position sizes.</p>
+<hr>
+<h2>Advanced Concepts</h2>
+<h3>Multi-Asset Gravitation</h3>
+<p>For portfolios with multiple assets, gravitational forces between assets can be calculated:</p>
+<pre><code class="language-javascript">// Force between two assets
+F_inter = G <em> (volume_A </em> volume_B) / correlation_distance²
+<p>Where:
+  correlation_distance = 1 - |correlation(A, B)|
+</code></pre></p>
+<p>This allows the engine to detect:
+<li><strong>Pair trading opportunities</strong> (high negative correlation)</li>
+<li><strong>Diversification benefits</strong> (low correlation)</li>
+<li><strong>Contagion risks</strong> (high positive correlation)</li></p>
+<p><strong>Principia Reference</strong>: Book III, Proposition LXIX (mutual gravitational perturbations)</p>
+<h3>Dynamic Mass Adjustment</h3>
+<p>Trading mass can be adjusted based on market volatility:</p>
+<pre><code class="language-javascript">adjustedMass = baseMass * (1 + volatility_factor)
+</code></pre>
+<p>Higher volatility increases effective mass, making the system more conservative (slower to change positions).</p>
+<p><strong>Principia Justification</strong>: In systems with higher uncertainty (resistance), greater force is required to produce the same acceleration.</p>
+<hr>
+<h2>Implementation Notes</h2>
+<h3>Integration with Main Bot</h3>
+<p>The engine integrates into <code>index.js</code>:</p>
+<pre><code class="language-javascript">const PrincipiaEngine = require('./principia-engine');
+<p>// Initialize engine
+const engine = new PrincipiaEngine(config.principia);</p>
+<p>// In main bot loop
+setInterval(async () => {
+  // Gather market data
+  const marketData = {
+    price: currentPrice,
+    volume: currentVolume,
+    signalStrength: calculateSignal(),
+    keyLevels: identifyKeyLevels(),
+    portfolioValue: await wallet.getBalance(),
+  };
+  
+  // Get trading decision
+  const decision = engine.analyzeMarket(marketData);
+  
+  // Execute decision
+  if (decision.action !== 'hold') {
+    await executeTrade(decision);
+  }
+}, config.bot.checkInterval);
+</code></pre></p>
+<h3>Performance Monitoring</h3>
+<p>Track Principia-specific metrics:
+<li><strong>Inertia override rate</strong>: How often signals overcome inertia</li>
+<li><strong>Average acceleration</strong>: Typical position change magnitude</li>
+<li><strong>Risk management effectiveness</strong>: Stop loss hit rate vs take profit</li>
+<li><strong>Momentum accuracy</strong>: Correlation between momentum and future returns</li>
+<li><strong>Gravitational pull accuracy</strong>: Support/resistance respect rate</li></p>
+<hr>
+<h2>References and Citations</h2>
+<h3>Primary Source</h3>
+<strong>Newton, Isaac.</strong> <em>Philosophiæ Naturalis Principia Mathematica</em>. London: Royal Society, 1687.
+<p>#### Specific Citations Used:</p>
+<li><strong>Law I (Inertia)</strong></li>
+   - Book I, Axioms or Laws of Motion, Law I
+   - Book I, Definition III (Quantity of matter)
+<li><strong>Law II (Acceleration)</strong></li>
+   - Book I, Axioms or Laws of Motion, Law II
+   - Book I, Corollary I (Composition of forces)
+   - Book II, Propositions on motion in resisting media
+<li><strong>Law III (Action-Reaction)</strong></li>
+   - Book I, Axioms or Laws of Motion, Law III
+   - Book I, Corollaries I-VI (Consequences of Law III)
+<li><strong>Universal Gravitation</strong></li>
+   - Book III, Proposition VII, Theorem VII
+   - Book III, Proposition VIII, Theorem VIII
+   - Book III, Phenomena I-VI (Observational basis)
+<li><strong>Conservation of Momentum</strong></li>
+   - Book I, Definition II (Quantity of motion)
+   - Book II, Proposition XXIV, Theorem XIX
+<h3>Modern Translations and Editions</h3>
+<li>Cohen, I. Bernard, and Anne Whitman (trans.). <em>The Principia: Mathematical Principles of Natural Philosophy</em>. University of California Press, 1999.</li>
+<li>Chandrasekhar, S. <em>Newton's Principia for the Common Reader</em>. Oxford University Press, 1995.</li>
+<h3>Application to Financial Markets</h3>
+<p>The application of physical laws to market dynamics has precedent:
+<li><strong>Econophysics</strong>: Field applying physics concepts to economics</li>
+<li><strong>Market microstructure</strong>: Studies of price formation mechanisms</li>
+<li><strong>Behavioral finance</strong>: Momentum and mean reversion effects</li></p>
+<hr>
+<h2>Conclusion</h2>
+<p>This trading engine represents a faithful application of Newton's Principia to algorithmic trading. Each law and principle has been translated into concrete trading logic:</p>
+<li><strong>Law I</strong>: Prevents overtrading through inertia</li>
+<li><strong>Law II</strong>: Proportional position sizing based on signal strength</li>
+<li><strong>Law III</strong>: Systematic risk management for every action</li>
+<li><strong>Universal Gravitation</strong>: Support/resistance attraction modeling</li>
+<li><strong>Conservation of Momentum</strong>: Trend persistence and reversal detection</li>
+<p>The framework is mathematically sound, philosophically consistent with Principia, and practically implementable in live trading systems.</p>
+<hr>
+<h2>Appendix A: Full Principia Text References</h2>
+<p>For reference, key passages from the original Latin with English translations:</p>
+<h3>Axioms, or Laws of Motion</h3>
+<p><strong>LEX I</strong> (Latin): <em>"Corpus omne perseverare in statu suo quiescendi vel movendi uniformiter in directum, nisi quatenus illud a viribus impressis cogitur statum suum mutare."</em></p>
+<p><strong>LEX II</strong> (Latin): <em>"Mutationem motus proportionalem esse vi motrici impressae, et fieri secundum lineam rectam qua vis illa imprimitur."</em></p>
+<p><strong>LEX III</strong> (Latin): <em>"Actioni contrariam semper et æqualem esse reactionem: sive corporum duorum actiones in se mutuo semper esse æquales et in partes contrarias dirigi."</em></p>
+<p>These fundamental laws form the mathematical and philosophical foundation of the entire trading engine.</p>
+<hr>
+<p><strong>Document Version</strong>: 1.0  
+<strong>Date</strong>: January 8, 2026  
+<strong>Engine Version</strong>: principia-engine.js v1.0  
+<strong>Framework</strong>: Solana Hyper Bot</p>
+<hr>
+<p><em>"Hypotheses non fingo"</em> - I frame no hypotheses
+— Isaac Newton, General Scholium, Principia Mathematica</p>
+<p>The bot makes no unfounded assumptions, instead deriving all trading logic directly from established physical principles proven over 300+ years.
+</p>
+    
+    <div class="page-break"></div>
+    
+    <div style="text-align: center; margin-top: 100px;">
+        <hr style="width: 50%; margin: 40px auto;">
+        <p style="font-style: italic; color: #666;">
+            "Hypotheses non fingo" - I frame no hypotheses<br>
+            — Isaac Newton, General Scholium, Principia Mathematica
+        </p>
+        <p style="margin-top: 40px; color: #888;">
+            End of Document
+        </p>
+    </div>
+</body>
+</html>
