@@ -226,6 +226,9 @@ class PrincipiaEngine {
     // LAW III: Calculate risk management (reaction)
     const riskManagement = this.calculateReaction(Math.abs(newPositionSize));
     
+    // Calculate position change before updating state
+    const positionChange = newPositionSize - this.positionSize;
+    
     // Update state
     this.currentPosition = newPosition;
     this.positionSize = newPositionSize;
@@ -239,7 +242,7 @@ class PrincipiaEngine {
       action,
       position: newPosition,
       positionSize: newPositionSize,
-      positionChange: newPositionSize - this.positionSize,
+      positionChange,
       force: combinedForce,
       acceleration,
       momentum,

@@ -195,7 +195,7 @@
 <h2>Newton's Three Laws of Motion</h2>
 <h3>LAW I: Law of Inertia</h3>
 <p>#### Original Text (Principia, Book I)
-<blockquote><em>"Every body perseveres in its state of rest, or of uniform motion in a right line, unless it is compelled to change that state by forces impressed thereon."</em></blockquote>
+<blockquote>*"Every body perseveres in its state of rest, or of uniform motion in a right line, unless it is compelled to change that state by forces impressed thereon."*</blockquote>
 >
 <blockquote>— Newton, Principia Mathematica, Axioms or Laws of Motion, Law I</blockquote></p>
 <p>#### Trading Application: <strong>Anti-Overtrading Principle</strong></p>
@@ -216,7 +216,7 @@ const INERTIA_THRESHOLD = 0.15; // 15% signal strength</p>
 <hr>
 <h3>LAW II: Law of Acceleration</h3>
 <p>#### Original Text (Principia, Book I)
-<blockquote><em>"The alteration of motion is ever proportional to the motive force impressed; and is made in the direction of the right line in which that force is impressed."</em></blockquote>
+<blockquote>*"The alteration of motion is ever proportional to the motive force impressed; and is made in the direction of the right line in which that force is impressed."*</blockquote>
 >
 <blockquote>— Newton, Principia Mathematica, Axioms or Laws of Motion, Law II</blockquote></p>
 <p><strong>Modern Formulation</strong>: F = ma, or a = F/m</p>
@@ -243,7 +243,7 @@ newPositionSize = currentPosition + acceleration;
 <hr>
 <h3>LAW III: Law of Action-Reaction</h3>
 <p>#### Original Text (Principia, Book I)
-<blockquote><em>"To every action there is always opposed an equal reaction: or the mutual actions of two bodies upon each other are always equal, and directed to contrary parts."</em></blockquote>
+<blockquote>*"To every action there is always opposed an equal reaction: or the mutual actions of two bodies upon each other are always equal, and directed to contrary parts."<em></blockquote>
 >
 <blockquote>— Newton, Principia Mathematica, Axioms or Laws of Motion, Law III</blockquote></p>
 <p>#### Trading Application: <strong>Risk Management Protocol</strong></p>
@@ -252,9 +252,9 @@ newPositionSize = currentPosition + acceleration;
 <pre><code class="language-javascript">calculateReaction(positionSize) {
   const ratio = this.config.riskReactionRatio;
   return {
-    stopLoss: positionSize <em> ratio </em> 0.5,      // Stop loss level
-    takeProfit: positionSize <em> ratio </em> 1.5,    // Profit target
-    hedgeSize: positionSize <em> ratio </em> 0.2,     // Hedge position
+    stopLoss: positionSize </em> ratio <em> 0.5,      // Stop loss level
+    takeProfit: positionSize </em> ratio <em> 1.5,    // Profit target
+    hedgeSize: positionSize </em> ratio * 0.2,     // Hedge position
   };
 }
 </code></pre></p>
@@ -272,7 +272,7 @@ newPositionSize = currentPosition + acceleration;
 <h2>Universal Gravitation</h2>
 <h3>Law of Universal Gravitation</h3>
 <p>#### Original Text (Principia, Book III)
-<blockquote><em>"Every particle attracts every other particle in the universe with a force which is directly proportional to the product of their masses and inversely proportional to the square of the distance between their centers."</em></blockquote>
+<blockquote>*"Every particle attracts every other particle in the universe with a force which is directly proportional to the product of their masses and inversely proportional to the square of the distance between their centers."*</blockquote>
 >
 <blockquote>— Newton, Principia Mathematica, Book III, Proposition VII, Theorem VII</blockquote></p>
 <p><strong>Mathematical Formulation</strong>: F = G × (m₁ × m₂) / r²</p>
@@ -292,10 +292,10 @@ newPositionSize = currentPosition + acceleration;
     if (distance === 0) continue;
     
     // F = G * (volume) / distance²
-    const force = G * (level.volume / Math.pow(distance, 2));
+    const force = G <em> (level.volume / Math.pow(distance, 2));
     const direction = level.price > currentPrice ? 1 : -1;
     
-    totalForce += force * direction;
+    totalForce += force </em> direction;
   }
   
   return totalForce;
@@ -321,7 +321,7 @@ newPositionSize = currentPosition + acceleration;
 <h2>Conservation of Momentum</h2>
 <h3>Law of Conservation of Momentum</h3>
 <p>#### Original Text (Principia, Book I)
-<blockquote><em>"The quantity of motion is the measure of the same, arising from the velocity and quantity of matter conjointly."</em></blockquote>
+<blockquote>*"The quantity of motion is the measure of the same, arising from the velocity and quantity of matter conjointly."<em></blockquote>
 >
 <blockquote>— Newton, Principia Mathematica, Book I, Definition II</blockquote></p>
 <p><strong>Mathematical Formulation</strong>: Momentum (p) = mass (m) × velocity (v)</p>
@@ -333,7 +333,7 @@ newPositionSize = currentPosition + acceleration;
   const velocity = (currentPrice - oldPrice) / oldPrice;
   
   // Momentum = mass × velocity
-  this.momentum = this.config.tradingMass * velocity;
+  this.momentum = this.config.tradingMass </em> velocity;
   
   return this.momentum;
 }
@@ -361,8 +361,8 @@ newPositionSize = currentPosition + acceleration;
   const gravitationalForce = this.calculateGravitationalForce(price, keyLevels);
   
   // 3. Combine forces
-  const combinedForce = signalStrength * 0.6 + 
-                       momentum * 0.2 + 
+  const combinedForce = signalStrength <em> 0.6 + 
+                       momentum </em> 0.2 + 
                        gravitationalForce * 0.2;
   
   // 4. Check inertia (Law I)
@@ -488,15 +488,15 @@ HedgeSize = Position × Ratio × 0.2
 <li>Key Resistance at $110 with high volume</li></p>
 <p><strong>Engine Analysis</strong>:
 <pre><code class="language-javascript">// Combined force
-combinedForce = 0.75 <em> 0.6 + 0.10 </em> 0.2 + gravitation * 0.2
+combinedForce = 0.75 * 0.6 + 0.10 * 0.2 + gravitation <em> 0.2
               = 0.45 + 0.02 + 0.03 = 0.50</p>
 <p>// Law I: Overcomes inertia (0.50 > 0.15) ✓
 // Law II: Acceleration = 0.50 / 1.0 = 0.50
 // Position increase by 50% of maximum</p>
 <p>// Law III: Risk management
-stopLoss = position * 0.5      // 50% stop
-takeProfit = position * 1.5    // 150% target
-hedge = position * 0.2         // 20% hedge</p>
+stopLoss = position </em> 0.5      // 50% stop
+takeProfit = position <em> 1.5    // 150% target
+hedge = position </em> 0.2         // 20% hedge</p>
 <p>// Action: BUY
 </code></pre></p>
 <p><strong>Principia Principles Applied</strong>:
@@ -533,7 +533,7 @@ combinedForce = 0.10 <em> 0.6 + 0.02 </em> 0.2 + 0.00 * 0.2
 distance = |95 - 94| = 1
 F_gravity = 0.001 * (high_volume / 1²) = 0.25 (strong upward pull)</p>
 <p>// Combined force
-combinedForce = 0.50 <em> 0.6 + (-0.15) </em> 0.2 + 0.25 * 0.2
+combinedForce = 0.50 * 0.6 + (-0.15) * 0.2 + 0.25 <em> 0.2
               = 0.30 - 0.03 + 0.05 = 0.32</p>
 <p>// Law I: Overcomes inertia (0.32 > 0.15) ✓
 // Action: BUY near support (mean reversion)
@@ -546,15 +546,15 @@ combinedForce = 0.50 <em> 0.6 + (-0.15) </em> 0.2 + 0.25 * 0.2
 <h2>Risk Management Framework</h2>
 <h3>Based on Law III (Action-Reaction)</h3>
 <p>#### Stop Loss Calculation
-<pre><code class="language-javascript">stopLoss = positionSize <em> riskReactionRatio </em> 0.5
+<pre><code class="language-javascript">stopLoss = positionSize </em> riskReactionRatio <em> 0.5
 </code></pre></p>
 <p><strong>Justification</strong>: Equal and opposite reaction requires protection against adverse moves. Stop loss represents the "reaction force" to entering a position.</p>
 <p>#### Take Profit Calculation
-<pre><code class="language-javascript">takeProfit = positionSize <em> riskReactionRatio </em> 1.5
+<pre><code class="language-javascript">takeProfit = positionSize </em> riskReactionRatio <em> 1.5
 </code></pre></p>
 <p><strong>Justification</strong>: Asymmetric reward:risk (1.5:1) accounts for trading costs and win rate requirements. Over time, this ratio ensures profitability with >40% win rate.</p>
 <p>#### Hedge Calculation
-<pre><code class="language-javascript">hedgeSize = positionSize <em> riskReactionRatio </em> 0.2
+<pre><code class="language-javascript">hedgeSize = positionSize </em> riskReactionRatio <em> 0.2
 </code></pre></p>
 <p><strong>Justification</strong>: Partial counter-position (20%) provides dynamic risk reduction without eliminating profit potential. This represents Newton's concept of opposing forces in equilibrium.</p>
 <h3>Portfolio Heat Management</h3>
@@ -565,7 +565,7 @@ combinedForce = 0.50 <em> 0.6 + (-0.15) </em> 0.2 + 0.25 * 0.2
 <h3>Multi-Asset Gravitation</h3>
 <p>For portfolios with multiple assets, gravitational forces between assets can be calculated:</p>
 <pre><code class="language-javascript">// Force between two assets
-F_inter = G <em> (volume_A </em> volume_B) / correlation_distance²
+F_inter = G </em> (volume_A <em> volume_B) / correlation_distance²
 <p>Where:
   correlation_distance = 1 - |correlation(A, B)|
 </code></pre></p>
@@ -576,7 +576,7 @@ F_inter = G <em> (volume_A </em> volume_B) / correlation_distance²
 <p><strong>Principia Reference</strong>: Book III, Proposition LXIX (mutual gravitational perturbations)</p>
 <h3>Dynamic Mass Adjustment</h3>
 <p>Trading mass can be adjusted based on market volatility:</p>
-<pre><code class="language-javascript">adjustedMass = baseMass * (1 + volatility_factor)
+<pre><code class="language-javascript">adjustedMass = baseMass </em> (1 + volatility_factor)
 </code></pre>
 <p>Higher volatility increases effective mass, making the system more conservative (slower to change positions).</p>
 <p><strong>Principia Justification</strong>: In systems with higher uncertainty (resistance), greater force is required to produce the same acceleration.</p>

@@ -23,11 +23,11 @@ function markdownToHtml(markdown) {
   html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
   html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
   
-  // Bold
+  // Bold (process before italic to avoid conflicts)
   html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
   
-  // Italic
-  html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+  // Italic (but not inside bold or other already processed tags)
+  html = html.replace(/(?<!<[^>]*)\*([^*]+?)\*(?![^<]*>)/g, '<em>$1</em>');
   
   // Code blocks
   html = html.replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre><code class="language-$1">$2</code></pre>');
