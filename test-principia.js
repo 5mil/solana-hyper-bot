@@ -83,7 +83,10 @@ const supportResult = engine.analyzeMarket(supportTest);
 console.log('Market Data:', JSON.stringify(supportTest, null, 2));
 console.log('Decision:', JSON.stringify(supportResult, null, 2));
 console.log('Gravitational Force:', supportResult.gravitationalForce);
-console.log('✅ Test passed: Gravity calculated (', supportResult.gravitationalForce !== undefined ? 'value: ' + supportResult.gravitationalForce.toFixed(4) : 'undefined', ')');
+const gravityDisplay = supportResult.gravitationalForce !== undefined 
+  ? `value: ${supportResult.gravitationalForce.toFixed(4)}` 
+  : 'undefined';
+console.log('✅ Test passed: Gravity calculated (', gravityDisplay, ')');
 console.log('\n');
 
 // Test 5: Momentum Tracking

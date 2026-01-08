@@ -26,8 +26,9 @@ function markdownToHtml(markdown) {
   // Bold (process before italic to avoid conflicts)
   html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
   
-  // Italic (but not inside bold or other already processed tags)
-  html = html.replace(/(?<!<[^>]*)\*([^*]+?)\*(?![^<]*>)/g, '<em>$1</em>');
+  // Italic (simple non-greedy match, avoiding matches inside asterisks)
+  // Note: This is a simplified parser and may not handle all edge cases
+  html = html.replace(/\*([^*\n]+?)\*/g, '<em>$1</em>');
   
   // Code blocks
   html = html.replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre><code class="language-$1">$2</code></pre>');

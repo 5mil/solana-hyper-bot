@@ -119,10 +119,10 @@ class PrincipiaEngine {
    */
   calculateGravitationalForce(currentPrice, keyLevels) {
     let totalForce = 0;
+    const minDistance = 0.01; // Minimum distance to prevent division by zero
     
     for (const level of keyLevels) {
-      const distance = Math.abs(currentPrice - level.price);
-      if (distance === 0) continue;
+      const distance = Math.max(minDistance, Math.abs(currentPrice - level.price));
       
       // Force proportional to volume and inverse square of distance
       const force = this.config.gravitationalConstant * 
@@ -215,10 +215,13 @@ class PrincipiaEngine {
     let action = 'hold';
     let newPosition = this.currentPosition;
     
-    if (newPositionSize > this.positionSize + 0.01) {
+    // Minimum position change threshold to trigger action (1% of current position)
+    const changeThreshold = 0.01;
+    
+    if (newPositionSize > this.positionSize + changeThreshold) {
       action = 'buy';
       newPosition = 'long';
-    } else if (newPositionSize < this.positionSize - 0.01) {
+    } else if (newPositionSize < this.positionSize - changeThreshold) {
       action = 'sell';
       newPosition = newPositionSize < 0 ? 'short' : (newPositionSize === 0 ? 'neutral' : 'long');
     }

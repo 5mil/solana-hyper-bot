@@ -209,7 +209,7 @@ async function main() {
         console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
       }
       
-      // Stop demo after 30 iterations (5 minutes at 10 second intervals)
+      // Stop demo after 30 iterations
       if (simulationCounter >= 30) {
         console.log('📊 Demonstration complete. Engine state:');
         console.log(JSON.stringify(principiaEngine.getState(), null, 2));
