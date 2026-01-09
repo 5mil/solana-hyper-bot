@@ -45,6 +45,10 @@ See [WALLET.md](WALLET.md) for detailed wallet configuration and usage.
 - ⚙️ **Flexible Configuration**: Environment variables and JSON config support
 - 🔄 **Auto-Recovery**: Graceful error handling and automatic wallet initialization
 - 🔬 **Principia Mathematica Engine**: Trading bot powered by Newton's laws of motion and universal gravitation
+- 📈 **Market Data Integration**: Real-time price tracking and technical analysis
+- 🤖 **Automated Trading**: Execute trades based on Principia engine signals
+- 🛡️ **Risk Management**: Built-in stop-loss, take-profit, and position sizing
+- 🔍 **Dry Run Mode**: Test strategies without risking real funds
 
 ## 🎯 Starting the Bot
 
@@ -71,8 +75,9 @@ On first run, the bot will:
 - Load or create a wallet automatically
 - Display your wallet address and balance
 - Initialize the Principia Mathematica trading engine
-- Start analyzing market conditions using Newton's laws
-- Begin making trading decisions based on physics principles
+- Start the market data feed
+- Begin analyzing market conditions using Newton's laws
+- Make trading decisions based on physics principles (in dry run mode by default)
 
 ## 🔬 Principia Mathematica Trading Engine
 
@@ -119,9 +124,32 @@ Edit `config.json` to tune the engine parameters:
     "gravitationalConstant": 0.001, // Support/resistance attraction strength
     "momentumPeriod": 20,           // Periods for momentum calculation
     "maxPositionSize": 0.3          // Max 30% of portfolio per position
+  },
+  "trading": {
+    "pairs": ["SOL-USDC"],          // Trading pairs to monitor
+    "dryRun": true,                 // Enable dry run mode (recommended)
+    "minTradeSize": 0.01,           // Minimum trade size in SOL
+    "updateInterval": 10000         // Market update interval in ms
   }
 }
 ```
+
+### 🔍 Dry Run Mode
+
+By default, the bot runs in **dry run mode** for safety. In this mode:
+- ✅ All trading logic executes normally
+- ✅ Market analysis and signals are real
+- ✅ You can see what trades would be executed
+- ❌ No actual trades are submitted to the blockchain
+- ❌ No funds are at risk
+
+To enable live trading:
+1. Set `"dryRun": false` in `config.json`
+2. Ensure you have sufficient SOL in your wallet
+3. Start with small position sizes to test
+4. Monitor the bot closely during initial runs
+
+**⚠️ WARNING**: Live trading involves real financial risk. Only trade with funds you can afford to lose.
 
 ## 📁 Installation Location
 
@@ -137,3 +165,42 @@ Default installation directory: `~/.solana-hyper-bot`
 ## 📝 License
 
 MIT
+
+## 🧪 Testing
+
+Run the test suites:
+
+```bash
+# Test Principia engine
+npm test
+
+# Test trading modules
+node test-trading.js
+```
+
+## 📊 Market Data & Trading
+
+The bot includes:
+
+- **Market Data Module**: Tracks real-time prices, calculates technical indicators (SMA, momentum), and detects support/resistance levels
+- **Trade Executor**: Executes trades based on Principia engine signals with built-in safety controls
+- **Risk Management**: Automatic stop-loss and take-profit calculations per Newton's Third Law
+
+### Technical Indicators
+
+- **Simple Moving Average (SMA)**: Trend identification
+- **Momentum**: Rate of price change over time
+- **Support/Resistance**: Key price levels detected from historical data
+- **Signal Strength**: Combined force metric from multiple indicators
+
+## 🔒 Safety Features
+
+- Default dry run mode prevents accidental trades
+- Minimum trade size limits
+- Maximum position size constraints (30% of portfolio by default)
+- Inertia threshold prevents overtrading
+- Risk management ratios for every trade
+
+## 📞 Support
+
+For issues or questions, please open an issue on GitHub.
