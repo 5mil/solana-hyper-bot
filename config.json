@@ -9,6 +9,16 @@
   "bot": {
     "enabled": true,
     "slippageTolerance": 0.01,
-    "maxRetries": 3
+    "maxRetries": 3,
+    "checkInterval": 10000
+  },
+  "principia": {
+    "enabled": true,
+    "inertiaThreshold": 0.15,
+    "tradingMass": 1.0,
+    "riskReactionRatio": 1.0,
+    "gravitationalConstant": 0.001,
+    "momentumPeriod": 20,
+    "maxPositionSize": 0.3
   }
 }
