@@ -7,6 +7,11 @@
 
 const https = require('https');
 
+// Constants for simulated data (TODO: Replace with real market data)
+const DEFAULT_VOLUME = 1000;
+const BASE_VOLUME = 1000;
+const VOLUME_VARIANCE = 500;
+
 class MarketData {
   constructor(config = {}) {
     this.config = {
@@ -145,7 +150,7 @@ class MarketData {
         if (distance < 0.1) { // Within 10% of current price
           levels.push({
             price: curr,
-            volume: 1000, // TODO: Use actual volume data from market API
+            volume: DEFAULT_VOLUME, // TODO: Use actual volume data from market API
             type: 'resistance'
           });
         }
@@ -157,7 +162,7 @@ class MarketData {
         if (distance < 0.1) { // Within 10% of current price
           levels.push({
             price: curr,
-            volume: 1000, // TODO: Use actual volume data from market API
+            volume: DEFAULT_VOLUME, // TODO: Use actual volume data from market API
             type: 'support'
           });
         }
@@ -216,7 +221,7 @@ class MarketData {
       return {
         pair,
         price: currentPrice,
-        volume: 1000 + Math.random() * 500, // TODO: Fetch actual volume from market API
+        volume: BASE_VOLUME + Math.random() * VOLUME_VARIANCE, // TODO: Fetch actual volume from market API
         signalStrength,
         momentum,
         sma20,

@@ -137,6 +137,8 @@ class TradeExecutor {
    * @param {number} size - Position size (fraction of portfolio)
    * @param {number} portfolioValue - Current portfolio value
    * @returns {Promise<object>} - Trade result
+   * 
+   * Note: Currently hardcoded to SOL-USDC. TODO: Parse pair parameter and support multiple pairs.
    */
   async executeBuy(pair, size, portfolioValue) {
     console.log(`\n🟢 EXECUTING BUY`);
@@ -165,6 +167,8 @@ class TradeExecutor {
    * @param {number} size - Position size to close (fraction)
    * @param {number} portfolioValue - Current portfolio value
    * @returns {Promise<object>} - Trade result
+   * 
+   * Note: Currently hardcoded to SOL-USDC. TODO: Parse pair parameter and support multiple pairs.
    */
   async executeSell(pair, size, portfolioValue) {
     console.log(`\n🔴 EXECUTING SELL`);
