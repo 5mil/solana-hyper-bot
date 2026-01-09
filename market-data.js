@@ -14,6 +14,7 @@ class MarketData {
       priceApi: config.priceApi || 'https://price.jup.ag/v4',
       updateInterval: config.updateInterval || 5000, // 5 seconds
       pairs: config.pairs || ['SOL-USDC'],
+      keyLevelThreshold: config.keyLevelThreshold || 0.02, // 2% threshold for level detection
     };
     
     this.lastPrices = new Map();
@@ -130,7 +131,7 @@ class MarketData {
     }
     
     const levels = [];
-    const threshold = 0.02; // 2% threshold for level detection
+    const threshold = this.config.keyLevelThreshold;
     
     // Find local maxima and minima as key levels
     for (let i = 1; i < prices.length - 1; i++) {
@@ -144,7 +145,7 @@ class MarketData {
         if (distance < 0.1) { // Within 10% of current price
           levels.push({
             price: curr,
-            volume: 1000, // Simplified - would need actual volume data
+            volume: 1000, // TODO: Use actual volume data from market API
             type: 'resistance'
           });
         }
@@ -156,7 +157,7 @@ class MarketData {
         if (distance < 0.1) { // Within 10% of current price
           levels.push({
             price: curr,
-            volume: 1000, // Simplified - would need actual volume data
+            volume: 1000, // TODO: Use actual volume data from market API
             type: 'support'
           });
         }
@@ -215,7 +216,7 @@ class MarketData {
       return {
         pair,
         price: currentPrice,
-        volume: 1000 + Math.random() * 500, // Simulated volume
+        volume: 1000 + Math.random() * 500, // TODO: Fetch actual volume from market API
         signalStrength,
         momentum,
         sma20,

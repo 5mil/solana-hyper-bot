@@ -8,6 +8,11 @@
 const { Transaction, VersionedTransaction } = require('@solana/web3.js');
 const https = require('https');
 
+// Constants
+const LAMPORTS_PER_SOL = 1_000_000_000;
+const SOL_MINT = 'So11111111111111111111111111111111111111112';
+const USDC_MINT = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
+
 class TradeExecutor {
   constructor(connection, wallet, config = {}) {
     this.connection = connection;
@@ -35,7 +40,7 @@ class TradeExecutor {
   async executeSwap(inputMint, outputMint, amount, options = {}) {
     try {
       // Validate trade size
-      if (amount < this.config.minTradeSize * 1e9) { // Convert SOL to lamports
+      if (amount < this.config.minTradeSize * LAMPORTS_PER_SOL) {
         return {
           success: false,
           reason: 'Trade size below minimum',
@@ -57,8 +62,8 @@ class TradeExecutor {
       // Dry run mode - don't execute actual trade
       if (this.config.dryRun) {
         console.log('🔍 DRY RUN MODE - Trade not executed');
-        console.log(`   Input: ${amount / 1e9} tokens`);
-        console.log(`   Expected output: ${quote.outAmount / 1e9} tokens`);
+        console.log(`   Input: ${amount / LAMPORTS_PER_SOL} tokens`);
+        console.log(`   Expected output: ${quote.outAmount / LAMPORTS_PER_SOL} tokens`);
         console.log(`   Price impact: ${quote.priceImpactPct}%`);
         
         const trade = {
@@ -140,12 +145,9 @@ class TradeExecutor {
     console.log(`   Portfolio value: ${portfolioValue} SOL`);
     
     // Calculate amount to trade
-    const amount = Math.floor(portfolioValue * size * 1e9); // Convert to lamports
+    const amount = Math.floor(portfolioValue * size * LAMPORTS_PER_SOL);
     
-    // For now, using placeholder mints (would need actual mint addresses)
-    const SOL_MINT = 'So11111111111111111111111111111111111111112';
-    const USDC_MINT = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
-    
+    // Execute swap using configured token mints
     const result = await this.executeSwap(SOL_MINT, USDC_MINT, amount);
     
     if (result.success) {
@@ -171,12 +173,9 @@ class TradeExecutor {
     console.log(`   Portfolio value: ${portfolioValue} SOL`);
     
     // Calculate amount to trade
-    const amount = Math.floor(portfolioValue * size * 1e9); // Convert to lamports
+    const amount = Math.floor(portfolioValue * size * LAMPORTS_PER_SOL);
     
-    // For now, using placeholder mints (would need actual mint addresses)
-    const USDC_MINT = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
-    const SOL_MINT = 'So11111111111111111111111111111111111111112';
-    
+    // Execute swap using configured token mints
     const result = await this.executeSwap(USDC_MINT, SOL_MINT, amount);
     
     if (result.success) {
