@@ -6,6 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "test": "node test-principia.js",
+    "test:trading": "node test-trading.js",
+    "test:all": "node test-principia.js && node test-trading.js",
     "generate-pdf": "node generate-pdf.js"
   },
   "keywords": [
