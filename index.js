@@ -7,20 +7,51 @@ const PrincipiaEngine = require('./principia-engine');
 const MarketData = require('./market-data');
 const TradeExecutor = require('./trade-executor');
 
+// Get possible config paths in priority order
+function getConfigPaths() {
+  return [
+    path.join(process.cwd(), 'config.json'),
+    path.join(__dirname, 'config.json'),
+    path.join(process.env.HOME || process.env.USERPROFILE || '', '.solana-hyper-bot', 'config.json')
+  ];
+}
+
 // Load configuration
 function loadConfig() {
-  const configPath = path.join(__dirname, 'config.json');
+  // Try multiple config locations in order of priority:
+  // 1. Current directory (where the bot is run from)
+  // 2. Script directory (__dirname)
+  // 3. Home directory installation (~/.solana-hyper-bot/config.json)
+  const configPaths = getConfigPaths();
   
-  if (fs.existsSync(configPath)) {
-    try {
-      return JSON.parse(fs.readFileSync(configPath, 'utf-8'));
-    } catch (error) {
-      console.warn('⚠️  Failed to load config.json, using defaults');
-      return getDefaultConfig();
+  for (const configPath of configPaths) {
+    if (fs.existsSync(configPath)) {
+      try {
+        console.log(`📂 Loading config from: ${configPath}`);
+        const content = fs.readFileSync(configPath, 'utf-8');
+        return JSON.parse(content);
+      } catch (error) {
+        console.warn(`⚠️  Failed to load ${configPath}: ${error.message}`);
+      }
     }
   }
   
+  console.warn('⚠️  No config.json found, using defaults');
   return getDefaultConfig();
+}
+
+// Get the actual config path being used
+function getConfigPath() {
+  const configPaths = getConfigPaths();
+  
+  for (const configPath of configPaths) {
+    if (fs.existsSync(configPath)) {
+      return configPath;
+    }
+  }
+  
+  // Return the most likely location if none exist
+  return path.join(__dirname, 'config.json');
 }
 
 function getDefaultConfig() {
@@ -61,7 +92,7 @@ async function main() {
   console.log('════════════════════════════════════════════════════════════════\n');
 
   // Load configuration
-  const config = loadConfig();
+  let config = loadConfig();
   console.log(`📋 Network: ${config.network}`);
   console.log(`📋 Log Level: ${config.logLevel}\n`);
 
@@ -171,6 +202,121 @@ async function main() {
   console.log('Bot is ready. Press Ctrl+C to exit.\n');
   console.log('📚 For details on Principia Mathematica implementation,');
   console.log('   see PRINCIPIA_MATHEMATICA_TRADING_FRAMEWORK.md\n');
+
+  // Watch config.json for changes and reload configuration dynamically
+  const configPath = getConfigPath();
+  let configWatchDebounce = null;
+  
+  console.log(`👁️  Watching config file for changes: ${configPath}\n`);
+  
+  const reloadConfig = () => {
+    try {
+      console.log('\n🔄 Config file changed, reloading configuration...');
+      const newConfig = loadConfig();
+      
+      // Update trade executor dry run mode
+      if (newConfig.trading?.dryRun !== config.trading?.dryRun) {
+        const dryRunMode = newConfig.trading?.dryRun !== false;
+        tradeExecutor.setDryRun(dryRunMode);
+        console.log(`   ✅ Trading mode updated: ${dryRunMode ? '🔍 DRY RUN' : '🔥 LIVE TRADING'}`);
+      }
+      
+      // Update trade executor min trade size
+      if (newConfig.trading?.minTradeSize !== config.trading?.minTradeSize) {
+        tradeExecutor.config.minTradeSize = newConfig.trading?.minTradeSize || 0.01;
+        console.log(`   ✅ Min trade size updated: ${tradeExecutor.config.minTradeSize} SOL`);
+      }
+      
+      // Update principia engine parameters if it exists
+      if (principiaEngine && newConfig.principia) {
+        let principiaUpdated = false;
+        
+        if (newConfig.principia.inertiaThreshold !== config.principia?.inertiaThreshold) {
+          principiaEngine.config.inertiaThreshold = newConfig.principia.inertiaThreshold;
+          console.log(`   ✅ Inertia threshold updated: ${newConfig.principia.inertiaThreshold}`);
+          principiaUpdated = true;
+        }
+        
+        if (newConfig.principia.tradingMass !== config.principia?.tradingMass) {
+          principiaEngine.config.tradingMass = newConfig.principia.tradingMass;
+          console.log(`   ✅ Trading mass updated: ${newConfig.principia.tradingMass}`);
+          principiaUpdated = true;
+        }
+        
+        if (newConfig.principia.riskReactionRatio !== config.principia?.riskReactionRatio) {
+          principiaEngine.config.riskReactionRatio = newConfig.principia.riskReactionRatio;
+          console.log(`   ✅ Risk:Reward ratio updated: ${newConfig.principia.riskReactionRatio}`);
+          principiaUpdated = true;
+        }
+        
+        if (newConfig.principia.gravitationalConstant !== config.principia?.gravitationalConstant) {
+          principiaEngine.config.gravitationalConstant = newConfig.principia.gravitationalConstant;
+          console.log(`   ✅ Gravitational constant updated: ${newConfig.principia.gravitationalConstant}`);
+          principiaUpdated = true;
+        }
+        
+        if (newConfig.principia.momentumPeriod !== config.principia?.momentumPeriod) {
+          principiaEngine.config.momentumPeriod = newConfig.principia.momentumPeriod;
+          console.log(`   ✅ Momentum period updated: ${newConfig.principia.momentumPeriod}`);
+          principiaUpdated = true;
+        }
+        
+        if (newConfig.principia.maxPositionSize !== config.principia?.maxPositionSize) {
+          principiaEngine.config.maxPositionSize = newConfig.principia.maxPositionSize;
+          console.log(`   ✅ Max position size updated: ${(newConfig.principia.maxPositionSize * 100).toFixed(0)}%`);
+          principiaUpdated = true;
+        }
+        
+        if (!principiaUpdated) {
+          console.log(`   ℹ️  No Principia engine parameters changed`);
+        }
+      }
+      
+      // Update market data configuration
+      if (marketData && newConfig.trading) {
+        let marketDataUpdated = false;
+        
+        if (JSON.stringify(newConfig.trading.pairs) !== JSON.stringify(config.trading?.pairs)) {
+          marketData.config.pairs = newConfig.trading.pairs || ['SOL-USDC'];
+          console.log(`   ✅ Trading pairs updated: ${marketData.config.pairs.join(', ')}`);
+          marketDataUpdated = true;
+        }
+        
+        if (newConfig.trading.updateInterval !== config.trading?.updateInterval) {
+          marketData.config.updateInterval = newConfig.trading.updateInterval || 10000;
+          console.log(`   ✅ Update interval updated: ${marketData.config.updateInterval}ms`);
+          marketDataUpdated = true;
+        }
+        
+        if (!marketDataUpdated) {
+          console.log(`   ℹ️  No market data parameters changed`);
+        }
+      }
+      
+      // Update the config reference
+      config = newConfig;
+      
+      console.log('✅ Configuration reloaded successfully\n');
+    } catch (error) {
+      console.error(`❌ Failed to reload config: ${error.message}\n`);
+    }
+  };
+  
+  // Set up file watcher for config hot reload
+  try {
+    fs.watch(configPath, (eventType, filename) => {
+      if (eventType === 'change') {
+        // Debounce rapid file changes (some editors trigger multiple events)
+        if (configWatchDebounce) {
+          clearTimeout(configWatchDebounce);
+        }
+        configWatchDebounce = setTimeout(reloadConfig, 500);
+      }
+    });
+  } catch (error) {
+    console.warn(`⚠️  Could not set up config file watcher: ${error.message}`);
+    console.warn('   Config changes will require bot restart\n');
+  }
 
   // Keep the process running
   process.on('SIGINT', () => {
