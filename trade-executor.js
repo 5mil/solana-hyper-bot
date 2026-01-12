@@ -114,7 +114,11 @@ class TradeExecutor {
       console.log(`ℹ️  Jupiter API not available on ${this.config.network}, using simulated quote`);
       
       // Return mock quote with realistic data
-      const mockOutAmount = Math.floor(amount * 0.99); // Simulate 1% slippage
+      // Simulate slippage based on configured slippageBps (default 0.5%)
+      const slippageMultiplier = 1 - (this.config.slippageBps / 10000);
+      const mockOutAmount = Math.floor(amount * slippageMultiplier);
+      const priceImpactPct = this.config.slippageBps / 500; // Estimate price impact from slippage
+      
       return {
         inputMint,
         outputMint,
@@ -123,7 +127,7 @@ class TradeExecutor {
         otherAmountThreshold: Math.floor(mockOutAmount * 0.995).toString(),
         swapMode: 'ExactIn',
         slippageBps: this.config.slippageBps,
-        priceImpactPct: 0.1,
+        priceImpactPct,
         contextSlot: 0,
         timeTaken: 0.1,
       };

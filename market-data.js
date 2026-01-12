@@ -88,8 +88,15 @@ class MarketData {
     if (this.config.network !== 'mainnet-beta') {
       console.log(`ℹ️  Jupiter API not available on ${this.config.network}, using simulated quote`);
       
+      // Default slippage to 50 bps (0.5%) if not configured
+      const slippageBps = 50;
+      
       // Return mock quote with realistic data
-      const mockOutAmount = Math.floor(amount * 0.99); // Simulate 1% slippage
+      // Simulate slippage based on slippageBps (default 0.5%)
+      const slippageMultiplier = 1 - (slippageBps / 10000);
+      const mockOutAmount = Math.floor(amount * slippageMultiplier);
+      const priceImpactPct = slippageBps / 500; // Estimate price impact from slippage
+      
       return {
         inputMint,
         outputMint,
@@ -97,8 +104,8 @@ class MarketData {
         outAmount: mockOutAmount,
         otherAmountThreshold: Math.floor(mockOutAmount * 0.995).toString(),
         swapMode: 'ExactIn',
-        slippageBps: 50,
-        priceImpactPct: 0.1,
+        slippageBps,
+        priceImpactPct,
       };
     }
     
