@@ -12,6 +12,11 @@ const DEFAULT_VOLUME = 1000;
 const BASE_VOLUME = 1000;
 const VOLUME_VARIANCE = 500;
 
+// Price impact estimation factor: slippageBps / 500
+// This estimates price impact as approximately 5x slippage percentage
+// e.g., 50bps (0.5%) slippage -> 0.1% price impact
+const PRICE_IMPACT_FACTOR = 500;
+
 class MarketData {
   constructor(config = {}) {
     this.config = {
@@ -93,7 +98,7 @@ class MarketData {
       // Simulate slippage based on configured slippageBps (default 0.5%)
       const slippageMultiplier = 1 - (this.config.slippageBps / 10000);
       const mockOutAmount = Math.floor(amount * slippageMultiplier);
-      const priceImpactPct = this.config.slippageBps / 500; // Estimate price impact from slippage
+      const priceImpactPct = this.config.slippageBps / PRICE_IMPACT_FACTOR;
       
       return {
         inputMint,

@@ -13,6 +13,11 @@ const LAMPORTS_PER_SOL = 1_000_000_000;
 const SOL_MINT = 'So11111111111111111111111111111111111111112';
 const USDC_MINT = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
 
+// Price impact estimation factor: slippageBps / 500
+// This estimates price impact as approximately 5x slippage percentage
+// e.g., 50bps (0.5%) slippage -> 0.1% price impact
+const PRICE_IMPACT_FACTOR = 500;
+
 class TradeExecutor {
   constructor(connection, wallet, config = {}) {
     this.connection = connection;
@@ -117,7 +122,7 @@ class TradeExecutor {
       // Simulate slippage based on configured slippageBps (default 0.5%)
       const slippageMultiplier = 1 - (this.config.slippageBps / 10000);
       const mockOutAmount = Math.floor(amount * slippageMultiplier);
-      const priceImpactPct = this.config.slippageBps / 500; // Estimate price impact from slippage
+      const priceImpactPct = this.config.slippageBps / PRICE_IMPACT_FACTOR;
       
       return {
         inputMint,

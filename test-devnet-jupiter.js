@@ -84,7 +84,7 @@ console.log('──────────────────────�
     console.log('✅ Quote received (mock data):');
     console.log('   Input amount:', quoteDevnet.inAmount || amount);
     console.log('   Output amount:', quoteDevnet.outAmount);
-    console.log('   Price impact:', quoteDevnet.priceImpactPct + '%');
+    console.log('   Price impact:', (quoteDevnet.priceImpactPct || 0) + '%');
     console.log('\n');
     
     // Test 6: Execute buy on devnet
@@ -98,7 +98,7 @@ console.log('──────────────────────�
       console.log('   Dry Run:', buyResult.dryRun);
       console.log('   Input amount:', buyResult.inputAmount);
       console.log('   Output amount:', buyResult.outputAmount);
-      console.log('   Price impact:', buyResult.priceImpact + '%');
+      console.log('   Price impact:', (buyResult.priceImpact || 0) + '%');
     } else {
       console.log('❌ Buy order failed:', buyResult.reason);
     }
@@ -115,7 +115,7 @@ console.log('──────────────────────�
       console.log('   Dry Run:', sellResult.dryRun);
       console.log('   Input amount:', sellResult.inputAmount);
       console.log('   Output amount:', sellResult.outputAmount);
-      console.log('   Price impact:', sellResult.priceImpact + '%');
+      console.log('   Price impact:', (sellResult.priceImpact || 0) + '%');
     } else {
       console.log('❌ Sell order failed:', sellResult.reason);
     }
