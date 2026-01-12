@@ -7,17 +7,22 @@ const PrincipiaEngine = require('./principia-engine');
 const MarketData = require('./market-data');
 const TradeExecutor = require('./trade-executor');
 
+// Get possible config paths in priority order
+function getConfigPaths() {
+  return [
+    path.join(process.cwd(), 'config.json'),
+    path.join(__dirname, 'config.json'),
+    path.join(process.env.HOME || process.env.USERPROFILE || '', '.solana-hyper-bot', 'config.json')
+  ];
+}
+
 // Load configuration
 function loadConfig() {
   // Try multiple config locations in order of priority:
   // 1. Current directory (where the bot is run from)
   // 2. Script directory (__dirname)
   // 3. Home directory installation (~/.solana-hyper-bot/config.json)
-  const configPaths = [
-    path.join(process.cwd(), 'config.json'),
-    path.join(__dirname, 'config.json'),
-    path.join(process.env.HOME || process.env.USERPROFILE || '', '.solana-hyper-bot', 'config.json')
-  ];
+  const configPaths = getConfigPaths();
   
   for (const configPath of configPaths) {
     if (fs.existsSync(configPath)) {
@@ -37,11 +42,7 @@ function loadConfig() {
 
 // Get the actual config path being used
 function getConfigPath() {
-  const configPaths = [
-    path.join(process.cwd(), 'config.json'),
-    path.join(__dirname, 'config.json'),
-    path.join(process.env.HOME || process.env.USERPROFILE || '', '.solana-hyper-bot', 'config.json')
-  ];
+  const configPaths = getConfigPaths();
   
   for (const configPath of configPaths) {
     if (fs.existsSync(configPath)) {
@@ -301,15 +302,21 @@ async function main() {
     }
   };
   
-  fs.watch(configPath, (eventType, filename) => {
-    if (eventType === 'change') {
-      // Debounce rapid file changes (some editors trigger multiple events)
-      if (configWatchDebounce) {
-        clearTimeout(configWatchDebounce);
+  // Set up file watcher for config hot reload
+  try {
+    fs.watch(configPath, (eventType, filename) => {
+      if (eventType === 'change') {
+        // Debounce rapid file changes (some editors trigger multiple events)
+        if (configWatchDebounce) {
+          clearTimeout(configWatchDebounce);
+        }
+        configWatchDebounce = setTimeout(reloadConfig, 500);
       }
-      configWatchDebounce = setTimeout(reloadConfig, 500);
-    }
-  });
+    });
+  } catch (error) {
+    console.warn(`⚠️  Could not set up config file watcher: ${error.message}`);
+    console.warn('   Config changes will require bot restart\n');
+  }
 
   // Keep the process running
   process.on('SIGINT', () => {

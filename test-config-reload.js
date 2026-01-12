@@ -41,7 +41,7 @@ async function runTest() {
       env: { 
         ...process.env,
         SOLANA_NETWORK: 'devnet',
-        BOT_ENABLED: 'false'  // Disable actual trading loop for test
+        BOT_ENABLED: 'false'  // Disable the bot entirely (no trading loop)
       }
     });
     
