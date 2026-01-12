@@ -16,6 +16,7 @@ console.log('──────────────────────�
 const marketData = new MarketData({
   pairs: ['SOL-USDC', 'BTC-USDC'],
   updateInterval: 5000,
+  network: 'devnet', // Use devnet for testing
 });
 
 console.log('✅ Market Data initialized successfully');
@@ -106,6 +107,7 @@ console.log('──────────────────────�
     const tradeExecutor = new TradeExecutor(mockConnection, mockWallet, {
       dryRun: true,
       minTradeSize: 0.01,
+      network: 'devnet', // Use devnet for testing
     });
     
     console.log('✅ Trade Executor initialized successfully');

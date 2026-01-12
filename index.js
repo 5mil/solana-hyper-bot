@@ -185,6 +185,7 @@ async function main() {
   const marketData = new MarketData({
     pairs: config.trading?.pairs || ['SOL-USDC'],
     updateInterval: config.trading?.updateInterval || 10000,
+    network: config.network,
   });
   console.log('✅ Market Data module initialized');
   console.log(`   - Trading Pairs: ${config.trading?.pairs?.join(', ') || 'SOL-USDC'}\n`);
@@ -194,6 +195,7 @@ async function main() {
   const tradeExecutor = new TradeExecutor(connection, wallet, {
     dryRun: config.trading?.dryRun !== false,
     minTradeSize: config.trading?.minTradeSize || 0.01,
+    network: config.network,
   });
   console.log('✅ Trade Executor initialized');
   console.log(`   - Mode: ${config.trading?.dryRun !== false ? '🔍 DRY RUN' : '🔥 LIVE TRADING'}`);

@@ -23,6 +23,7 @@ class TradeExecutor {
       maxRetries: config.maxRetries || 3,
       dryRun: config.dryRun !== false, // Default to dry run mode
       minTradeSize: config.minTradeSize || 0.01, // Minimum trade size in SOL
+      network: config.network || 'mainnet-beta', // Network to determine if Jupiter API is available
     };
     
     this.tradeHistory = [];
@@ -107,6 +108,27 @@ class TradeExecutor {
    * @returns {Promise<object>} - Quote data
    */
   async getQuote(inputMint, outputMint, amount) {
+    // Jupiter API only supports mainnet-beta
+    // For devnet/testnet, return mock quote data
+    if (this.config.network !== 'mainnet-beta') {
+      console.log(`ℹ️  Jupiter API not available on ${this.config.network}, using simulated quote`);
+      
+      // Return mock quote with realistic data
+      const mockOutAmount = Math.floor(amount * 0.99); // Simulate 1% slippage
+      return {
+        inputMint,
+        outputMint,
+        inAmount: amount.toString(),
+        outAmount: mockOutAmount,
+        otherAmountThreshold: Math.floor(mockOutAmount * 0.995).toString(),
+        swapMode: 'ExactIn',
+        slippageBps: this.config.slippageBps,
+        priceImpactPct: 0.1,
+        contextSlot: 0,
+        timeTaken: 0.1,
+      };
+    }
+    
     return new Promise((resolve, reject) => {
       const url = `${this.config.jupiterApi}/quote?inputMint=${inputMint}&outputMint=${outputMint}&amount=${amount}&slippageBps=${this.config.slippageBps}`;
       

@@ -20,6 +20,7 @@ class MarketData {
       updateInterval: config.updateInterval || 5000, // 5 seconds
       pairs: config.pairs || ['SOL-USDC'],
       keyLevelThreshold: config.keyLevelThreshold || 0.02, // 2% threshold for level detection
+      network: config.network || 'mainnet-beta', // Network to determine if Jupiter API is available
     };
     
     this.lastPrices = new Map();
@@ -33,6 +34,23 @@ class MarketData {
    * @returns {Promise<object>} - Price data
    */
   async fetchPrice(tokenMint) {
+    // Jupiter Price API only supports mainnet-beta
+    // For devnet/testnet, return mock price data
+    if (this.config.network !== 'mainnet-beta') {
+      console.log(`ℹ️  Jupiter Price API not available on ${this.config.network}, using simulated price`);
+      
+      // Return mock price data
+      return {
+        [tokenMint]: {
+          id: tokenMint,
+          mintSymbol: 'TOKEN',
+          vsToken: 'USDC',
+          vsTokenSymbol: 'USDC',
+          price: 100 + Math.random() * 10, // Simulated price between 100-110
+        }
+      };
+    }
+    
     return new Promise((resolve, reject) => {
       const url = `${this.config.priceApi}/price?ids=${tokenMint}`;
       
@@ -65,6 +83,25 @@ class MarketData {
    * @returns {Promise<object>} - Quote data
    */
   async fetchQuote(inputMint, outputMint, amount) {
+    // Jupiter API only supports mainnet-beta
+    // For devnet/testnet, return mock quote data
+    if (this.config.network !== 'mainnet-beta') {
+      console.log(`ℹ️  Jupiter API not available on ${this.config.network}, using simulated quote`);
+      
+      // Return mock quote with realistic data
+      const mockOutAmount = Math.floor(amount * 0.99); // Simulate 1% slippage
+      return {
+        inputMint,
+        outputMint,
+        inAmount: amount.toString(),
+        outAmount: mockOutAmount,
+        otherAmountThreshold: Math.floor(mockOutAmount * 0.995).toString(),
+        swapMode: 'ExactIn',
+        slippageBps: 50,
+        priceImpactPct: 0.1,
+      };
+    }
+    
     return new Promise((resolve, reject) => {
       const url = `${this.config.jupiterApi}/quote?inputMint=${inputMint}&outputMint=${outputMint}&amount=${amount}&slippageBps=50`;
       
