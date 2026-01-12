@@ -20,5 +20,11 @@
     "gravitationalConstant": 0.001,
     "momentumPeriod": 20,
     "maxPositionSize": 0.3
+  },
+  "trading": {
+    "pairs": ["SOL-USDC"],
+    "dryRun": true,
+    "minTradeSize": 0.01,
+    "updateInterval": 10000
   }
 }
