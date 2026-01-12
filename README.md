@@ -35,6 +35,8 @@ After deployment, update your configuration:
 2. Configure your Solana wallet (automatically created if not present)
 3. Adjust trading parameters in `~/.solana-hyper-bot/config.json`
 
+**💡 New:** Config changes now apply immediately without restarting! See [CONFIG_RELOAD.md](CONFIG_RELOAD.md) for details.
+
 See [WALLET.md](WALLET.md) for detailed wallet configuration and usage.
 
 ## 🎯 Features
@@ -49,6 +51,7 @@ See [WALLET.md](WALLET.md) for detailed wallet configuration and usage.
 - 🤖 **Automated Trading**: Execute trades based on Principia engine signals
 - 🛡️ **Risk Management**: Built-in stop-loss, take-profit, and position sizing
 - 🔍 **Dry Run Mode**: Test strategies without risking real funds
+- 🔥 **Hot Config Reload**: Change settings without restarting the bot
 
 ## 🎯 Starting the Bot
 
