@@ -178,7 +178,13 @@ Run the test suites:
 npm test
 
 # Test trading modules
-node test-trading.js
+npm run test:trading
+
+# Test devnet Jupiter API
+npm run test:devnet
+
+# Run all tests
+npm run test:all
 ```
 
 ## 📊 Market Data & Trading
@@ -188,6 +194,15 @@ The bot includes:
 - **Market Data Module**: Tracks real-time prices, calculates technical indicators (SMA, momentum), and detects support/resistance levels
 - **Trade Executor**: Executes trades based on Principia engine signals with built-in safety controls
 - **Risk Management**: Automatic stop-loss and take-profit calculations per Newton's Third Law
+- **Network-Aware Jupiter Integration**: Automatically uses mock data on devnet/testnet, real Jupiter API on mainnet
+
+### Jupiter API Network Support
+
+The bot automatically detects your network and adjusts accordingly:
+- **Mainnet**: Uses real Jupiter API for quotes and execution
+- **Devnet/Testnet**: Uses simulated mock data (Jupiter API not available)
+
+See [JUPITER_NETWORK_SUPPORT.md](JUPITER_NETWORK_SUPPORT.md) for detailed information about how the bot handles different networks.
 
 ### Technical Indicators
 

@@ -12,6 +12,11 @@ const DEFAULT_VOLUME = 1000;
 const BASE_VOLUME = 1000;
 const VOLUME_VARIANCE = 500;
 
+// Price impact estimation factor: slippageBps / 500
+// This estimates price impact as approximately 5x slippage percentage
+// e.g., 50bps (0.5%) slippage -> 0.1% price impact
+const PRICE_IMPACT_FACTOR = 500;
+
 class MarketData {
   constructor(config = {}) {
     this.config = {
@@ -20,6 +25,8 @@ class MarketData {
       updateInterval: config.updateInterval || 5000, // 5 seconds
       pairs: config.pairs || ['SOL-USDC'],
       keyLevelThreshold: config.keyLevelThreshold || 0.02, // 2% threshold for level detection
+      network: config.network || 'mainnet-beta', // Network to determine if Jupiter API is available
+      slippageBps: config.slippageBps || 50, // Default slippage in basis points (0.5%)
     };
     
     this.lastPrices = new Map();
@@ -33,6 +40,23 @@ class MarketData {
    * @returns {Promise<object>} - Price data
    */
   async fetchPrice(tokenMint) {
+    // Jupiter Price API only supports mainnet-beta
+    // For devnet/testnet, return mock price data
+    if (this.config.network !== 'mainnet-beta') {
+      console.log(`ℹ️  Jupiter Price API not available on ${this.config.network}, using simulated price`);
+      
+      // Return mock price data
+      return {
+        [tokenMint]: {
+          id: tokenMint,
+          mintSymbol: 'TOKEN',
+          vsToken: 'USDC',
+          vsTokenSymbol: 'USDC',
+          price: 100 + Math.random() * 10, // Simulated price between 100-110
+        }
+      };
+    }
+    
     return new Promise((resolve, reject) => {
       const url = `${this.config.priceApi}/price?ids=${tokenMint}`;
       
@@ -65,8 +89,31 @@ class MarketData {
    * @returns {Promise<object>} - Quote data
    */
   async fetchQuote(inputMint, outputMint, amount) {
+    // Jupiter API only supports mainnet-beta
+    // For devnet/testnet, return mock quote data
+    if (this.config.network !== 'mainnet-beta') {
+      console.log(`ℹ️  Jupiter API not available on ${this.config.network}, using simulated quote`);
+      
+      // Return mock quote with realistic data
+      // Simulate slippage based on configured slippageBps (default 0.5%)
+      const slippageMultiplier = 1 - (this.config.slippageBps / 10000);
+      const mockOutAmount = Math.floor(amount * slippageMultiplier);
+      const priceImpactPct = this.config.slippageBps / PRICE_IMPACT_FACTOR;
+      
+      return {
+        inputMint,
+        outputMint,
+        inAmount: amount.toString(),
+        outAmount: mockOutAmount,
+        otherAmountThreshold: Math.floor(mockOutAmount * 0.995).toString(),
+        swapMode: 'ExactIn',
+        slippageBps: this.config.slippageBps,
+        priceImpactPct,
+      };
+    }
+    
     return new Promise((resolve, reject) => {
-      const url = `${this.config.jupiterApi}/quote?inputMint=${inputMint}&outputMint=${outputMint}&amount=${amount}&slippageBps=50`;
+      const url = `${this.config.jupiterApi}/quote?inputMint=${inputMint}&outputMint=${outputMint}&amount=${amount}&slippageBps=${this.config.slippageBps}`;
       
       https.get(url, (res) => {
         let data = '';
