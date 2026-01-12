@@ -7,7 +7,8 @@
     "start": "node index.js",
     "test": "node test-principia.js",
     "test:trading": "node test-trading.js",
-    "test:all": "node test-principia.js && node test-trading.js",
+    "test:devnet": "node test-devnet-jupiter.js",
+    "test:all": "node test-principia.js && node test-trading.js && node test-devnet-jupiter.js",
     "generate-pdf": "node generate-pdf.js"
   },
   "keywords": [
