@@ -21,6 +21,7 @@ class MarketData {
       pairs: config.pairs || ['SOL-USDC'],
       keyLevelThreshold: config.keyLevelThreshold || 0.02, // 2% threshold for level detection
       network: config.network || 'mainnet-beta', // Network to determine if Jupiter API is available
+      slippageBps: config.slippageBps || 50, // Default slippage in basis points (0.5%)
     };
     
     this.lastPrices = new Map();
@@ -88,14 +89,11 @@ class MarketData {
     if (this.config.network !== 'mainnet-beta') {
       console.log(`ℹ️  Jupiter API not available on ${this.config.network}, using simulated quote`);
       
-      // Default slippage to 50 bps (0.5%) if not configured
-      const slippageBps = 50;
-      
       // Return mock quote with realistic data
-      // Simulate slippage based on slippageBps (default 0.5%)
-      const slippageMultiplier = 1 - (slippageBps / 10000);
+      // Simulate slippage based on configured slippageBps (default 0.5%)
+      const slippageMultiplier = 1 - (this.config.slippageBps / 10000);
       const mockOutAmount = Math.floor(amount * slippageMultiplier);
-      const priceImpactPct = slippageBps / 500; // Estimate price impact from slippage
+      const priceImpactPct = this.config.slippageBps / 500; // Estimate price impact from slippage
       
       return {
         inputMint,
@@ -104,13 +102,13 @@ class MarketData {
         outAmount: mockOutAmount,
         otherAmountThreshold: Math.floor(mockOutAmount * 0.995).toString(),
         swapMode: 'ExactIn',
-        slippageBps,
+        slippageBps: this.config.slippageBps,
         priceImpactPct,
       };
     }
     
     return new Promise((resolve, reject) => {
-      const url = `${this.config.jupiterApi}/quote?inputMint=${inputMint}&outputMint=${outputMint}&amount=${amount}&slippageBps=50`;
+      const url = `${this.config.jupiterApi}/quote?inputMint=${inputMint}&outputMint=${outputMint}&amount=${amount}&slippageBps=${this.config.slippageBps}`;
       
       https.get(url, (res) => {
         let data = '';

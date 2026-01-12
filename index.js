@@ -186,6 +186,7 @@ async function main() {
     pairs: config.trading?.pairs || ['SOL-USDC'],
     updateInterval: config.trading?.updateInterval || 10000,
     network: config.network,
+    slippageBps: (config.bot?.slippageTolerance || 0.01) * 10000, // Convert to basis points
   });
   console.log('✅ Market Data module initialized');
   console.log(`   - Trading Pairs: ${config.trading?.pairs?.join(', ') || 'SOL-USDC'}\n`);
@@ -196,6 +197,7 @@ async function main() {
     dryRun: config.trading?.dryRun !== false,
     minTradeSize: config.trading?.minTradeSize || 0.01,
     network: config.network,
+    slippageBps: (config.bot?.slippageTolerance || 0.01) * 10000, // Convert to basis points
   });
   console.log('✅ Trade Executor initialized');
   console.log(`   - Mode: ${config.trading?.dryRun !== false ? '🔍 DRY RUN' : '🔥 LIVE TRADING'}`);
